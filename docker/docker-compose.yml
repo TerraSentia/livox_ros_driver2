@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: livox_ros_driver2:humble
+    image: nolan.azurecr.io/livox_driver-ros2:latest
     container_name: livox_driver
     network_mode: host
     privileged: true
