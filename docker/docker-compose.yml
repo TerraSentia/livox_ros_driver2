@@ -1,0 +1,21 @@
+services:
+  livox_driver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nolan.azurecr.io/livox_driver-ros2:latest
+    container_name: livox_driver
+    network_mode: host
+    privileged: true
+    environment:
+      - ROS_DOMAIN_ID=0
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - DISPLAY=${DISPLAY}
+    volumes:
+      # Mount source code for development (rebuild ros2_ws inside container after changes)
+      - ../:/root/ros2_ws/src/livox_ros_driver2
+      # X11 for rviz (optional)
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    stdin_open: true
+    tty: true
+    command: /bin/bash
