@@ -97,6 +97,10 @@ void PubHandler::SetPointCloudsCallback(PointCloudsCallback cb, void* client_dat
 
 void PubHandler::OnLivoxLidarPointCloudCallback(uint32_t handle, const uint8_t dev_type,
                                                 LivoxLidarEthernetPacket *data, void *client_data) {
+
+  data->time_type = kTimestampTypeGptpOrPtp;
+  std::cout << "Timestamp type: " << static_cast<int>(data->time_type) << std::endl;
+
   PubHandler* self = (PubHandler*)client_data;
   if (!self) {
     return;
