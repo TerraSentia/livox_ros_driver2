@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 echo "[livox] Sourcing ROS 2..."
 source /opt/ros/humble/setup.bash
