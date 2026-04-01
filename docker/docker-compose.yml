@@ -16,6 +16,4 @@ services:
       - ../:/root/ros2_ws/src/livox_ros_driver2
       # X11 for rviz (optional)
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-    stdin_open: true
-    tty: true
-    command: /bin/bash
+    command: ["/bin/bash", "-lc", "bash /root/ros2_ws/src/livox_ros_driver2/docker/start_livox.sh"]

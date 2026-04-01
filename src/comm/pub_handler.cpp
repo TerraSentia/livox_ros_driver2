@@ -99,7 +99,7 @@ void PubHandler::OnLivoxLidarPointCloudCallback(uint32_t handle, const uint8_t d
                                                 LivoxLidarEthernetPacket *data, void *client_data) {
 
   data->time_type = kTimestampTypeGptpOrPtp;
-  std::cout << "Timestamp type: " << static_cast<int>(data->time_type) << std::endl;
+  // std::cout << "Timestamp type: " << static_cast<int>(data->time_type) << std::endl;
 
   PubHandler* self = (PubHandler*)client_data;
   if (!self) {
