@@ -2,7 +2,7 @@
 
 ## Start / stop
 
-From the directory that contains `docker-compose.yml`:
+From the directory that contains `docker-compose.yml` (on the TMAX3 Front NUC : `/home/companion/livox_ws/src/livox_ros_driver2/` ):
 
 ```bash
 docker compose -f docker-compose.yml up -d
