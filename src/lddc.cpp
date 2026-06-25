@@ -62,13 +62,14 @@ Lddc::Lddc(int format, int multi_topic, int data_src, int output_type,
 }
 #elif defined BUILDING_ROS2
 Lddc::Lddc(int format, int multi_topic, int data_src, int output_type,
-           double frq, std::string &frame_id)
+           double frq, std::string &frame_id, bool use_system_time)
     : transfer_format_(format),
       use_multi_topic_(multi_topic),
       data_src_(data_src),
       output_type_(output_type),
       publish_frq_(frq),
-      frame_id_(frame_id) {
+      frame_id_(frame_id),
+      use_system_time_(use_system_time) {
   publish_period_ns_ = kNsPerSecond / publish_frq_;
   lds_ = nullptr;
 #if 0
@@ -313,7 +314,9 @@ void Lddc::InitPointcloud2Msg(const StoragePacket& pkg, PointCloud2& cloud, uint
   #ifdef BUILDING_ROS1
       cloud.header.stamp = ros::Time( timestamp / 1000000000.0);
   #elif defined BUILDING_ROS2
-      cloud.header.stamp = rclcpp::Time(timestamp);
+      cloud.header.stamp = use_system_time_
+          ? rclcpp::Clock(RCL_SYSTEM_TIME).now()
+          : rclcpp::Time(timestamp);
   #endif
 
   std::vector<LivoxPointXyzrtlt> points;
@@ -369,7 +372,9 @@ void Lddc::InitCustomMsg(CustomMsg& livox_msg, const StoragePacket& pkg, uint8_t
 #ifdef BUILDING_ROS1
   livox_msg.header.stamp = ros::Time(timestamp / 1000000000.0);
 #elif defined BUILDING_ROS2
-  livox_msg.header.stamp = rclcpp::Time(timestamp);
+  livox_msg.header.stamp = use_system_time_
+      ? rclcpp::Clock(RCL_SYSTEM_TIME).now()
+      : rclcpp::Time(timestamp);
 #endif
 
   livox_msg.point_num = pkg.points_num;
@@ -484,7 +489,9 @@ void Lddc::InitImuMsg(const ImuData& imu_data, ImuMsg& imu_msg, uint64_t& timest
 #ifdef BUILDING_ROS1
   imu_msg.header.stamp = ros::Time(timestamp / 1000000000.0);  // to ros time stamp
 #elif defined BUILDING_ROS2
-  imu_msg.header.stamp = rclcpp::Time(timestamp);  // to ros time stamp
+  imu_msg.header.stamp = use_system_time_
+      ? rclcpp::Clock(RCL_SYSTEM_TIME).now()
+      : rclcpp::Time(timestamp);
 #endif
 
   imu_msg.angular_velocity.x = imu_data.gyro_x;
